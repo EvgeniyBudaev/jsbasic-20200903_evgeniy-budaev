@@ -39,7 +39,6 @@ export default class UserTable {
   init() {
     let tbody = document.createElement('tbody');
     for (let i = 0; i < this._rows.length; i++) {
-      console.log('this._rows', this._rows[i]);
       tbody.insertAdjacentHTML('beforeend', this.toRow(this._rows[i]));
     }
     return this._tbody = tbody;
@@ -58,8 +57,7 @@ export default class UserTable {
   }
 
   deleteRow() {
-    document.addEventListener('click', function(event) {
-      console.log(event.target);
+    this.elem.addEventListener('click', function(event) {
       if (event.target.tagName === 'BUTTON') {
         event.target.closest('tr').remove();
       }

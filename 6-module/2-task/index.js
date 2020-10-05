@@ -30,20 +30,11 @@ export default class ProductCard {
   }
 
   addCard() {
-    document.addEventListener('DOMContentLoaded', () => {
-      const button = document.querySelector('.card__button');
-      const card = document.querySelector('.card');
-
-      card.addEventListener("product-add", function(event) {
-        console.log('событие создано', event.detail);
-      });
-
-      button.addEventListener('click', () => {
-        button.dispatchEvent(new CustomEvent("product-add", {
-          detail: this.product.id,
-          bubbles: true
-        }));
-      });
+    this.elem.addEventListener('click', () => {
+      this.elem.dispatchEvent(new CustomEvent("product-add", {
+        detail: this.product.id,
+        bubbles: true
+      }));
     });
   }
 
