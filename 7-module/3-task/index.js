@@ -1,14 +1,18 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class StepSlider {
-  constructor({ steps, value = 1 }) {
-    this.steps = steps;
-    this.value = value;
-    this.render();
+  constructor(setup) {
+    this.defaults = {
+      steps: 4,
+      value: 2,
+    };
+    this.setup = setup;
+    this.options = this.extend({}, this.defaults, this.setup);
+    this.render(this.options.value);
     this.addEventListeners();
   }
 
-  render(value = 0) {
+  render(value) {
     this.elem = createElement(
       `
                  <div class="slider">
@@ -27,7 +31,7 @@ export default class StepSlider {
     const steps = this.elem.querySelector('.slider__steps');
     let fragment = document.createDocumentFragment();
     let i;
-    for (i = 0; i < this.steps; i++) {
+    for (i = 0; i < this.options.steps; i++) {
       const step = document.createElement('span');
       step.setAttribute('data-id', i);
       fragment.appendChild(step);
@@ -35,22 +39,38 @@ export default class StepSlider {
     steps.append(fragment);
 
     // Значения по-умолчанию
-    // const thumb = this.elem.querySelector('.slider__thumb');
-    // thumb.style.left = 25 * value + '%';
-    //
-    // const progress = this.elem.querySelector('.slider__progress');
-    // progress.style.width = 25 * value + '%';
+    const thumb = this.elem.querySelector('.slider__thumb');
+    thumb.style.left = 25 * value + '%';
 
-    // Добавление активного класса элементу по-умолчанию
+    const progress = this.elem.querySelector('.slider__progress');
+    progress.style.width = 25 * value + '%';
+
+    // Добавление активного класса первому элементу
     const start = this.elem.querySelectorAll('[data-id]');
     for (let j = 0; j < start.length; j++) {
       start[value].classList.add('slider__step-active');
     }
 
+
   }
 
   sub(ref) {
     return this.elem.querySelector(`.slider__${ref}`);
+  }
+
+  extend(out) {
+    out = out || {};
+    for (let i = 1; i < arguments.length; i++) {
+      if (!arguments[i]) {
+        continue;
+      }
+      for (let key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key)) {
+          out[key] = arguments[i][key];
+        }
+      }
+    }
+    return out;
   }
 
 
@@ -97,4 +117,6 @@ export default class StepSlider {
     this.sub('value').textContent = value;
     return this.value = value;
   }
+
+
 }
