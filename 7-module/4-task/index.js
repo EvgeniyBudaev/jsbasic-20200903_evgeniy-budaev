@@ -1,5 +1,3 @@
-import createElement from '../../assets/lib/create-element.js';
-
 export default class StepSlider {
   constructor({ steps, value = 0 }) {
     this.steps = steps;
@@ -7,6 +5,7 @@ export default class StepSlider {
     this.render();
     this.addEventListeners();
     this.setValue(value);
+    this.droppable();
   }
   render() {
     this.elem = createElement(`
@@ -59,4 +58,37 @@ export default class StepSlider {
   }
 
 
+  droppable() {
+    this.thumb = this.elem.querySelector('.slider__thumb');
+    this.thumb.ondragstart = () => false;
+    this.progress = this.elem.querySelector('.slider__progress');
+
+    this.thumb.onpointerdown = function(event) {
+      console.log('this.elem', this.elem) // undefined
+      this.elem.classList.add('slider_dragging');
+
+      let left = event.clientX - this.elem.getBoundingClientRect().left;
+      let leftRelative = left / this.elem.offsetWidth;
+
+      if (leftRelative < 0) {
+        leftRelative = 0;
+      }
+
+      if (leftRelative > 1) {
+        leftRelative = 0;
+      }
+
+      let leftPercents = leftRelative * 100;
+
+      this.thumb.style.left = `${leftPercents}%`;
+      this.progress.style.width = `${leftPercents}%`;
+
+      let approximateValue = leftRelative * this.segments;
+      let value = Math.round(approximateValue);
+      this.setValue(value);
+    }
+
+    this.thumb.onpointerup = function(event) {
+      this.elem.classList.remove('slider_dragging');
+    }
 }
