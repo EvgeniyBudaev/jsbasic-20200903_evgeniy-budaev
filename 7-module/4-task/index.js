@@ -1,5 +1,5 @@
 export default class StepSlider {
-  constructor({ steps, value = 0 }) {
+  constructor({steps, value = 0}) {
     this.steps = steps;
     this.segments = steps - 1;
     this.render();
@@ -7,6 +7,7 @@ export default class StepSlider {
     this.setValue(value);
     this.droppable();
   }
+
   render() {
     this.elem = createElement(`
       <div class="slider">
@@ -26,6 +27,7 @@ export default class StepSlider {
     }
 
   }
+
   sub(ref) {
     return this.elem.querySelector(`.slider__${ref}`);
   }
@@ -63,7 +65,7 @@ export default class StepSlider {
     this.thumb.ondragstart = () => false;
     this.progress = this.elem.querySelector('.slider__progress');
 
-    this.thumb.onpointerdown = function(event) {
+    this.thumb.onpointerdown = function (event) {
       console.log('this.elem', this.elem) // undefined
       this.elem.classList.add('slider_dragging');
 
@@ -88,7 +90,8 @@ export default class StepSlider {
       this.setValue(value);
     }
 
-    this.thumb.onpointerup = function(event) {
+    this.thumb.onpointerup = function (event) {
       this.elem.classList.remove('slider_dragging');
     }
+  }
 }
