@@ -33,13 +33,8 @@ export default class CartIcon {
     }
   }
 
-  addEventListeners() {
-    document.addEventListener('scroll', () => this.updatePosition());
-    window.addEventListener('resize', () => this.updatePosition());
-  }
-
   updatePosition() {
-    //  Ваш код
+
     if (!this.elem.offsetHeight) {return;} // not visible
 
     if (!this.initialTopCoord) {
@@ -82,4 +77,10 @@ export default class CartIcon {
       zIndex: ''
     });
   }
+
+  addEventListeners() {
+    document.addEventListener('scroll', () => this.updatePosition());
+    window.addEventListener('resize', () => this.updatePosition());
+  }
+
 }
